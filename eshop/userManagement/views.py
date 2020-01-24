@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 
 # Create your views here.
-def login(request):
+def user_login(request):
     return render(request,'userManagement/login.html')
 
 
@@ -18,12 +18,13 @@ def confirmLogin(request):
         return render(request,'userManagement/relogin.html')
     
 
-def signUp(request):
+def user_signUp(request):
     if request.method == 'GET':
         return render(request,'usermanageMent/signup.html')
     else:
-        user = User.objects.create_user(username=request.POST['username'],password=request.POST['password'],email=request.POST['email'],first_name)
+        user = User.objects.create_user(username=request.POST['Username'],password=request.POST['Password'],email=request.POST['Email'],first_name=request.POST['FName'],last_name=request.POST['LName'])
         user.save()
+        return redirect('/login')
 
 
 from django.contrib.auth import authenticate
