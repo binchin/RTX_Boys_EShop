@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 
 # Create your views here.
@@ -11,11 +11,10 @@ def confirmLogin(request):
     rpass = request.POST['Password']
     user = authenticate(username=rusername, password=rpass)
     if user is not None:
-        return render(request,'viewproduct/home.html')
+        return redirect('/')
     else:
         return render(request,'userManagement/relogin.html')
     
-
 
 def signUp(request):
     pass
