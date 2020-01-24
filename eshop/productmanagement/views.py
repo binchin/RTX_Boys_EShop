@@ -11,7 +11,10 @@ from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 def view_manage_page(request):
-    return render(request,'manageProduct.htm')
+    if request.user.is_authenticated:
+        return render(request,'manageProduct.htm')
+    else:
+        return HttpResponse('You do not have permissions to access this resource.')
 
 
 class ForAccessories:
