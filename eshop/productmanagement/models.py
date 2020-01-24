@@ -25,6 +25,7 @@ class Phones(models.Model):
     battery = models.CharField(max_length=60)
     description = models.TextField() 
     product  = models.OneToOneField(Product,on_delete=models.CASCADE, primary_key = True)
+    
     def __str__(self):
         return str(self.id)
 
@@ -33,6 +34,7 @@ class Accessories(models.Model):
     product = models.OneToOneField(Product,on_delete=models.CASCADE, primary_key = True)
     category = models.CharField(max_length=255)
     description = models.TextField()
+    
     def __str__(self):
         return str(self.id)
 
@@ -48,5 +50,6 @@ class Laptop(models.Model):
     chipset = models.CharField(max_length=255)
     weight = models.CharField(max_length=255)
     description = models.TextField() 
+    
     def __str__(self):
         return str(self.id)
