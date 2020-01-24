@@ -8,120 +8,191 @@ from .models import Accessories
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
+
 # Create your views here.
 def view_manage_page(request):
     return render(request,'manageProduct.htm')
 
-#this display the form to add phone
-def view_phone_form(request):
-    return render(request,'addPhoneForm.htm')
 
-#this display the form for accessories
-def view_accessories_form(request):
-    return render(request,'accessoriesForm.htm')
+class ForAccessories:
+    #this display the form for accessories
+    def view_accessories_form(request):
+        return render(request,'accessoriesForm.htm')
 
-# def view_phone_update(request):
-#     if request.method=="POST":
-#         get_id = request.POST
-#         phoneObj=Phone.objects.get(id=get_id)
-#         contxt_var={
-#             "phone":phoneObj
-#         }
-#     else:    
-#         return render(request, 'updateForms/phoneUpdate.htm', contxt_var)
+    #save added accessories
+    def save_accessories(request):
+        get_name = request.POST['Name']
+        get_price = request.POST['Price']
+        get_stockNo = request.POST['StockNo']
+        get_releaseDate = request.POST['Date']
+        get_brand = request.POST['Brand']
+        get_description = request.POST['Description']
+        get_category = request.POST['Category']
 
-#To get the inserted number and create context variable and pass to another form
-def get_acc_id(request):
-    access_id = request.GET['acc_id']
-    # print(access_id)
-    accObj = Accessories.objects.get(id=access_id)
-    context={
-        'acc':accObj
-    }
-    return render(request,'updateForms/accessoriesUpdate.htm',context)
-#function to update the accessories
-def update_accessories(request,id):
-    name=request.POST['Name']
-    brand=request.POST['Brand']
-    price=request.POST['Price']
-    stockNo=request.POST['StockNo']
-    date=request.POST['Date']
-    description = request.POST['Description']
-    category = request.POST['Category']
-# update queries
-    updateAccessories = Accessories.objects.get(id=id)
-    updateAccessories.name=name
-    updateAccessories.brand=brand
-    updateAccessories.price=price
-    updateAccessories.stockNo=stockNo
-    updateAccessories.date=date
-    updateAccessories.description=description
-    updateAccessories.category=category
-    # if request.method == 'POST' and (request.FILES['Image'] or request.FILES['Specification']):
-    #     image=request.FILES['Image']
-    #     specs=request.FILES['Specification']
-    #     fs2 = FileSystemStorage()
-    #     filename = fs2.save(image.name, updateAccessories.image)
-    #     uploaded_file_url2 = fs2.url(filename)
-    #     filename2 = fs2.save(specs.name,updateAccessories.specs)
-    #     uploaded_file_url2 = fs2.url(filename2)
-    updateAccessories.save()
-    return HttpResponse("Successfully Updated !!")
+        if request.method == 'POST' and (request.FILES['Image'] or request.FILES['Specification']):
+            image=request.FILES['Image']
+            specs=request.FILES['Specification']
+            fs1 = FileSystemStorage(location='media/media/images')
+            filename1 = fs1.save(image.name, image)
+            uploaded_file_url1 = fs1.url(filename1)
 
+            fs2 = FileSystemStorage(location='media/media/documents')
+            filename2 = fs2.save(specs.name,specs)
+            uploaded_file_url2 = fs2.url(filename2)
 
-#save retrieved data in database
-def  save_phone_database(request):
-    get_screenSize = request.POST['screen size']
-    get_RAM = request.POST['ram']
-    get_ROM = request.POST['rom']
-    get_color = request.POST['Color']
-    get_battery = request.POST['Battery']
-    get_description = request.POST['Description']
-    get_name = request.POST['Name']
-    get_price = request.POST['Price']
-    get_stockNo = request.POST['StockNo']
-    get_releaseDate = request.POST['Date']
-    get_brand = request.POST['Brand']
+        productObj = Product.objects.create(name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,image=uploaded_file_url1,specs=uploaded_file_url2)
+        productObj.save()
+
+        accessoriesObj = Accessories(description=get_description,category=get_category)
+        accessoriesObj.save()
         
-    
-    if request.method == 'POST' and (request.FILES['Image'] or request.FILES['Specification']):
-        image=request.FILES['Image']
-        specs=request.FILES['Specification']
-        fs = FileSystemStorage()
-        filename = fs.save(image.name, image)
-        uploaded_file_url = fs.url(filename)
+        return HttpResponse("Successfully Stored !!")
 
-        filename2 = fs.save(specs.name,specs)
-        uploaded_file_url = fs.url(filename2)
+    #To get the inserted number and create context variable and pass to another form
+    def get_acc_id(request):
+        access_id = request.GET['acc_id']
+        # print(access_id)
+        try:
+            accObj = Accessories.objects.get(product_id=access_id)
+            context={
+                'acc':accObj
+            }
+            return render(request,'updateForms/accessoriesUpdate.htm',context)
+        except Accessories.DoesNotExist:
+            return HttpResponse("ID not found !!")
 
-    phoneObj = Phones(image=uploaded_file_url,specs=uploaded_file_url,screenSize=get_screenSize,RAM=get_RAM,ROM=get_ROM,color=get_color,battery=get_battery,description=get_description,name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand)
-    phoneObj.save()
-    return HttpResponse("Successfully Stored !!")
+    #function to update the accessories
+    def update_accessories(request,id):
+        name=request.POST['Name']
+        brand=request.POST['Brand']
+        price=request.POST['Price']
+        stockNo=request.POST['StockNo']
+        date=request.POST['Date']
+        description = request.POST['Description']
+        category = request.POST['Category']
 
-#save added accessories
-def save_accessories(request):
-    get_name = request.POST['Name']
-    get_price = request.POST['Price']
-    get_stockNo = request.POST['StockNo']
-    get_releaseDate = request.POST['Date']
-    get_brand = request.POST['Brand']
-    get_description = request.POST['Description']
-    get_category = request.POST['Category']
+        updateAccessories = Accessories.objects.get(product_id=id)
+        productUpdate = Product.objects.get(id=id)
+        productUpdate.name=name
+        productUpdate.brand=brand
+        productUpdate.price=price
+        productUpdate.stockNo=stockNo
+        productUpdate.date=date
+        updateAccessories.description=description
+        updateAccessories.category=category
 
-    if request.method == 'POST' and (request.FILES['Image'] or request.FILES['Specification']):
-        image=request.FILES['Image']
-        specs=request.FILES['Specification']
-        fs2 = FileSystemStorage()
-        filename = fs2.save(image.name, image)
-        uploaded_file_url2 = fs2.url(filename)
-        filename2 = fs2.save(specs.name,specs)
-        uploaded_file_url2 = fs2.url(filename2)
+        # if request.method == 'POST' and (request.FILES['Image'] or request.FILES['Specification']):
+        #     image=request.FILES['Image']
+        #     specs=request.FILES['Specification']
+        #     fs1 = FileSystemStorage(location='media/media/images')
+        #     filename = fs1.save(image.name, image)       
+        #     uploaded_file_url2 = fs1.url(filename)
+        #     productUpdate.image = uploaded_file_url2.replace('/media','media/images')  
 
-    accessoriesObj = Accessories(description=get_description,name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,category=get_category,image=uploaded_file_url2,specs=uploaded_file_url2)
-    accessoriesObj.save()
-    return HttpResponse("Successfully Stored !!")
+        #     fs2 = FileSystemStorage(location='media/media/documents')
+        #     filename2 = fs2.save(specs.name, specs)
+        #     uploaded_file_url2 = fs2.url(filename2)
+        #     productUpdate.specs = uploaded_file_url2.replace('/media','media/documents')
 
+        updateAccessories.save()
+        productUpdate.save()
+        return HttpResponse("Successfully Updated !!")
 
+class ForPhones:
+    #this display the form to add phone
+    def view_phone_form(request):
+        return render(request,'addPhoneForm.htm')
+    #save retrieved data in database
+    def  save_phone_database(request):
+        get_screenSize = request.POST['screen size']
+        get_RAM = request.POST['ram']
+        get_ROM = request.POST['rom']
+        get_color = request.POST['Color']
+        get_battery = request.POST['Battery']
+        get_description = request.POST['Description']
+        get_name = request.POST['Name']
+        get_price = request.POST['Price']
+        get_stockNo = request.POST['StockNo']
+        get_releaseDate = request.POST['Date']
+        get_brand = request.POST['Brand']
+            
+        
+        if request.method == 'POST' and (request.FILES['Image'] or request.FILES['Specification']):
+            image=request.FILES['Image']
+            specs=request.FILES['Specification']
+            
+            fs1 = FileSystemStorage(location='media/media/images')
+            filename1 = fs1.save(image.name, image)
+            uploaded_file_url1 = fs1.url(filename1)
+
+            fs2 = FileSystemStorage(location='media/media/documents')
+            filename2 = fs2.save(specs.name,specs)
+            uploaded_file_url2 = fs2.url(filename2)
+
+        productObj = Product.objects.create(name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,image=uploaded_file_url1,specs=uploaded_file_url2)
+        productObj.save()
+
+        phoneObj = Phones(screenSize=get_screenSize,RAM=get_RAM,ROM=get_ROM,color=get_color,battery=get_battery,description=get_description)
+        phoneObj.save()
+        return HttpResponse("Successfully Stored !!")
+
+    #get id to be updated
+    def get_phone_id(request):
+        phoneID = request.GET['phone_id']
+        try:
+            phoneObj = Phones.objects.get(product_id=phoneID)
+            context={'phone':phoneObj}
+            return render(request,'updateForms/phoneUpdate.htm',context)
+        except Phones.DoesNotExist:
+            return HttpResponse("ID not found !!")
+
+    def update_phones(request,id):
+        name=request.POST['Name']
+        brand=request.POST['Brand']
+        price=request.POST['Price']
+        stockNo=request.POST['StockNo']
+        date=request.POST['Date']
+        description = request.POST['Description']
+        category = request.POST['Category']
+        ram=request.POST['ram']
+        rom=request.POST['rom']
+        screenSize = request.POST['screen size']
+        color = request.POST['Color']
+        battery = request.POST['Battery']
+
+        updatePhone = Phones.objects.get(product_id=id)
+        updatePhone.description=description
+        updatePhone.category=category
+        updatePhone.RAM=ram
+        updatePhone.ROM=rom
+        updatePhone.screenSize=screenSize
+        updatePhone.color=color
+        updatePhone.battery=battery
+
+        productUpdate = Product.objects.get(id=id)
+        productUpdate.name=name
+        productUpdate.brand=brand
+        productUpdate.price=price
+        productUpdate.stockNo=stockNo
+        productUpdate.date=date
+        
+
+        # if request.method == 'POST' and (request.FILES['Image'] or request.FILES['Specification']):
+        #     image=request.FILES['Image']
+        #     specs=request.FILES['Specification']
+        #     fs1 = FileSystemStorage(location='media/media/images')
+        #     filename = fs1.save(image.name, image)       
+        #     uploaded_file_url2 = fs1.url(filename)
+        #     productUpdate.image = uploaded_file_url2.replace('/media','media/images')  
+
+        #     fs2 = FileSystemStorage(location='media/media/documents')
+        #     filename2 = fs2.save(specs.name, specs)
+        #     uploaded_file_url2 = fs2.url(filename2)
+        #     productUpdate.specs = uploaded_file_url2.replace('/media','media/documents')
+
+        updatePhone.save()
+        productUpdate.save()
+        return HttpResponse("Successfully Updated !!")
 
 
 # *************************************************************************************

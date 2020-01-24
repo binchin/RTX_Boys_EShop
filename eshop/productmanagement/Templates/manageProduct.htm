@@ -31,17 +31,13 @@
                                 <form action="phoneUpdate/edit" method="GET">
                                     <label for="">EnterID:</label>
                                     <input type="number" name="phone_id">
-                                    <button type="submit" class="btn btn-secondary">Edit This</button>
-                            
+                                    <button type="submit" class="btn btn-secondary">Edit This</button>                            
                                 </form>                                
                             </div>
                             <div class="form-group col-md-6">
-                                <a href="" class="btn btn-primary">DELETE PHONE</a>
-                            </div>
-
-                            
-                    </div>
-                    
+                                <a href="{% url 'deleteProducts' %}" class="btn btn-primary">DELETE PHONE</a>
+                            </div>                            
+                    </div>                    
                 </div>
             
             
@@ -54,10 +50,8 @@
                             <form action="accessoriesUpdate/edit" method="GET">
                                 <label for="">EnterID:</label>
                                 <input type="number" name="acc_id">
-                                <button type="submit" class="btn btn-secondary">Edit This</button>
-                        
-                            </form>
-                            
+                                <button type="submit" class="btn btn-secondary">Edit This</button>                        
+                            </form>                            
                         </div>
                         <div class="form-group col-md-6">
                             <a href="{% url 'deleteProducts' %}" target="_self" class="btn btn-secondary">DELETE PRODUCTS</a>
