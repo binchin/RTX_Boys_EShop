@@ -10,9 +10,9 @@ class UserTest(TestCase):
         self.email = 'testuser@email.com'
         self.password = 'password'
 
-    # def test_signup_page_url(self):
-    #     response = self.client.get("signup/")
-    #     self.assertNotEqual(response.status_code, 200)
+    def test_signup_page_url(self):
+        response = self.client.get("signup/")
+        self.assertNotEqual(response.status_code, 200)
 
     def test_user_count(self):
         users = get_user_model().objects.all()
