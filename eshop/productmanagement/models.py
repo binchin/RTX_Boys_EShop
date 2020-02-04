@@ -27,7 +27,7 @@ class Phones(models.Model):
     product  = models.OneToOneField(Product,on_delete=models.CASCADE, primary_key = True)
     
     def __str__(self):
-        return str(self.id)
+        return str(self.description)
 
 
 class Accessories(models.Model):
