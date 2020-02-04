@@ -2,25 +2,33 @@ from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from productmanagement.models import Product,Phones,Laptop,Accessories
 import json
-
+from django.core.exceptions import ObjectDoesNotExist
+# try:
+#     go  = Content.objects.get(name="baby")
+# except ObjectDoesNotExist:
+#     go = None
 
 @csrf_exempt
 def getProductDetails(request,ID):
     if request.method == "GET":
         # to search product in their tables
         product = Product.objects.get(id = ID)
+        # finding in which table exists
         phone = Phones.objects.get(product = ID)
-        laptop = Laptop.objects.get(product = ID)
+        laptop = Laptop.objects.filter(product = ID)
         accessories = Accessories.objects.get(product = ID)
+        # print(str(product.image.url))
+        img = str(product.image.url)
+        spec = str(product.specs.url)
         # below code checks whether the product is phone,laptop or accessories and sends json response acordingly
-        if (phone is not null):
+        if (phone is not None):
             return JsonResponse({
                 "product":"phone",
                 "id":product.id,
                 "name":product.name,
                 "price":product.price,
-                "image":product.image,
-                "specs":product.specs,
+                "image":img,
+                "specs":spec,
                 "brand":product.image,
                 "screenSize":phone.screenSize,
                 "color":phone.color,
@@ -28,16 +36,15 @@ def getProductDetails(request,ID):
                 "ROM":phone.ROM,
                 "battery":phone.battery,
                 "description":phone.description
-
             })
-        elif(laptop is not null):
+        elif(laptop is not None):
             return JsonResponse({
                 "product":"laptop",
                 "id":product.id,
                 "name":product.name,
                 "price":product.price,
-                "image":product.image,
-                "specs":product.specs,
+                "image":img,
+                "specs":spec,
                 "brand":product.image,
                 "screenSize":laptop.screenSize,
                 "color":laptop.color,
@@ -49,13 +56,13 @@ def getProductDetails(request,ID):
                 "graphics":laptop.graphics,
                 "weight":laptop.weight,
             })
-        elif(accessories is not null):
+        elif(accessories is not None):
             return JsonResponse({
                 "product":"accessories",
                 "id":product.id,
                 "name":product.name,
-                "price":product.price,
-                "image":product.image,
+                "image":img,
+                "specs":spec,
                 "specs":product.specs,
                 "brand":product.image,
                 "category":accessories.category,

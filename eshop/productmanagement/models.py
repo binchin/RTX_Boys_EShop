@@ -36,7 +36,7 @@ class Accessories(models.Model):
     description = models.TextField()
     
     def __str__(self):
-        return str(self.id)
+        return str(self.description)
 
 class Laptop(models.Model):
     product  = models.OneToOneField(Product,on_delete=models.CASCADE, primary_key = True)
@@ -52,4 +52,4 @@ class Laptop(models.Model):
     description = models.TextField() 
     
     def __str__(self):
-        return str(self.id)
+        return str(self.description)
