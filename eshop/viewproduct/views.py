@@ -17,11 +17,11 @@ def viewProductDetails(request,ID):
     return render(request,'viewproduct/view.html',context_varible)
 
 
-# def seePhones(request):
-#     return render(request,'phones.html')
+def viewPhones(request):
+    return render(request,'viewproduct/phones.html',params)
 
-# def seeLaptops(request):
-#     return render(request,'laptops.html')
+def viewLaptops(request):
+    return render(request,'viewproduct/laptops.html',params)
 
-# def seeAccessories(request):
-#     return render(request,'accessories.html')
+def viewAccessories(request):
+    return render(request,'viewproduct/accessories.html',params)
