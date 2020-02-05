@@ -18,10 +18,16 @@ def viewProductDetails(request,ID):
 
 
 def viewPhones(request):
+    product = Product.objects.all()
+    params = {'products':product}
     return render(request,'viewproduct/phones.html',params)
 
 def viewLaptops(request):
+    product = Product.objects.all()
+    params = {'products':product}
     return render(request,'viewproduct/laptops.html',params)
 
 def viewAccessories(request):
+    product = Product.objects.all()
+    params = {'products':product}
     return render(request,'viewproduct/accessories.html',params)
