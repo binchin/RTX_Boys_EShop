@@ -20,15 +20,15 @@
         </div>
     </div>
     {% empty %}
-    <p>There are no such products available.</p>
-
-
+    <div>
+    <h3>There are no such products available.</h3>
     Your search - <b> {{query}} </b>- did not match any documents. Suggestions:
     <ul>
         <li>Make sure that all words are spelled correctly.</li>
         <li> Try different keywords.</li>
         <li> Try more general keywords.</li>
     </ul>
+    </div>
     {% endfor %}
 </div>
 <br>
