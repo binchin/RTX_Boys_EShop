@@ -1,0 +1,36 @@
+{% extends 'viewproduct/basic.html' %}
+<!-- title -->
+{% block title%}eshop | accessories{% endblock %}
+<!-- start of body -->
+{% block main-page %}
+
+<!-- product block -->
+
+<h1 style="margin-left: 150px;">Latest in store</h1>
+<div class="viewproduct">
+    {% for product in products %}
+    <div class="card" style="width: 18rem; margin: 10px;">
+        <img src="{{product.image.url}}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{product.name}}</h5>
+
+            <p class="card-text"><b>NRs:{{product.price}}</b></b>
+            </p>
+            <a href="view/{{product.id}}" class="btn btn-dark">View Product</a>
+        </div>
+    </div>
+    {% empty %} There are no products availble. {% endfor %}
+</div>
+<br>
+<!-- styling -->
+<style>
+    .viewproduct {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        margin: auto;
+        align-content: space-between;
+        justify-content: center;
+    }
+</style>
+{% endblock %}
