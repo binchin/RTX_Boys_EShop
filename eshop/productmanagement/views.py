@@ -11,13 +11,19 @@ from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 def view_manage_page(request):
-    return render(request,'manageProduct.htm')
+    if request.user.is_authenticated:
+        return render(request,'manageProduct.htm')
+    else:
+        return HttpResponse('You do not have permissions to access this resource.')
 
 
 class ForAccessories:
     #this display the form for accessories
     def view_accessories_form(request):
-        return render(request,'accessoriesForm.htm')
+        if request.user.is_authenticated:
+            return render(request,'accessoriesForm.htm')
+        else: 
+            return HttpResponse('You do not have permissions to access this resource.')
 
     #save added accessories
     def save_accessories(request):
@@ -35,10 +41,13 @@ class ForAccessories:
             fs1 = FileSystemStorage(location='media/media/images')
             filename1 = fs1.save(image.name, image)
             uploaded_file_url1 = fs1.url(filename1)
+            # use this replace command to upload as there seems to be problem with file library
+            uploaded_file_url1 = uploaded_file_url1.replace('/media','media/images')
 
             fs2 = FileSystemStorage(location='media/media/documents')
             filename2 = fs2.save(specs.name,specs)
             uploaded_file_url2 = fs2.url(filename2)
+            uploaded_file_url2 = uploaded_file_url2.replace('/media','media/images')
 
         productObj = Product.objects.create(name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,image=uploaded_file_url1,specs=uploaded_file_url2)
         productObj.save()
@@ -50,17 +59,21 @@ class ForAccessories:
 
     #To get the inserted number and create context variable and pass to another form
     def get_acc_id(request):
-        access_id = request.GET['acc_id']
-        # print(access_id)
-        try:
-            accObj = Accessories.objects.get(product_id=access_id)
-            context={
-                'acc':accObj
-            }
-            return render(request,'updateForms/accessoriesUpdate.htm',context)
-        except Accessories.DoesNotExist:
-            return HttpResponse("ID not found !!")
+        if request.user.is_authenticated:
+            access_id = request.GET['acc_id']
+            # print(access_id)
+            try:
+                accObj = Accessories.objects.get(product_id=access_id)
+                context={
+                    'acc':accObj
+                }
+                return render(request,'updateForms/accessoriesUpdate.htm',context)
+            except Accessories.DoesNotExist:
+                return HttpResponse("ID not found !!")
+        else:
+            return HttpResponse('You do not have permissions to access this resource.')
 
+        
     #function to update the accessories
     def update_accessories(request,id):
         name=request.POST['Name']
@@ -101,7 +114,11 @@ class ForAccessories:
 class ForPhones:
     #this display the form to add phone
     def view_phone_form(request):
-        return render(request,'addPhoneForm.htm')
+        if request.user.is_authenticated:
+            return render(request,'addPhoneForm.htm')
+        else:
+           return HttpResponse('You do not have permissions to access this resource.')
+
     #save retrieved data in database
     def  save_phone_database(request):
         get_screenSize = request.POST['screen size']
@@ -124,10 +141,12 @@ class ForPhones:
             fs1 = FileSystemStorage(location='media/media/images')
             filename1 = fs1.save(image.name, image)
             uploaded_file_url1 = fs1.url(filename1)
+            uploaded_file_url1 = uploaded_file_url1.replace('/media','media/images')
 
             fs2 = FileSystemStorage(location='media/media/documents')
             filename2 = fs2.save(specs.name,specs)
             uploaded_file_url2 = fs2.url(filename2)
+            uploaded_file_url2 = uploaded_file_url2.replace('/media','media/documents')
 
         productObj = Product.objects.create(name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,image=uploaded_file_url1,specs=uploaded_file_url2)
         productObj.save()
@@ -138,13 +157,16 @@ class ForPhones:
 
     #get id to be updated
     def get_phone_id(request):
-        phoneID = request.GET['phone_id']
-        try:
-            phoneObj = Phones.objects.get(product_id=phoneID)
-            context={'phone':phoneObj}
-            return render(request,'updateForms/phoneUpdate.htm',context)
-        except Phones.DoesNotExist:
-            return HttpResponse("ID not found !!")
+        if request.user.is_authenticated:
+            phoneID = request.GET['phone_id']
+            try:
+                phoneObj = Phones.objects.get(product_id=phoneID)
+                context={'phone':phoneObj}
+                return render(request,'updateForms/phoneUpdate.htm',context)
+            except Phones.DoesNotExist:
+                return HttpResponse("ID not found !!")
+        else:
+            return HttpResponse('You do not have permissions to access this resource.')
 
     def update_phones(request,id):
         name=request.POST['Name']

@@ -1,15 +1,14 @@
 from django.shortcuts import render
 from django.template import Template,context
-from productmanagement.models import Phones,Accessories
+from productmanagement.models import Product,Phones,Accessories,Laptop
 # Create your views here.
 
+
+#  ***SEARCH FUNCTIONALITY***
 def view_search(request):
-    query=request.GET['query']
-    if len(query)>78:
-        phones=[]
-    else:    
-        phones= Phones.objects.filter(name__icontains=query)
-    context_variable={'products': phones, 'query': query}
+    query=request.GET['query']  
+    products= Product.objects.filter(name__icontains=query)
+    context_variable={'products': products, 'query': query}
     return render(request,'search.html',context_variable)
 
 

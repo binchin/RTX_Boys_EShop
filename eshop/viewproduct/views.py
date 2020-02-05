@@ -1,21 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import Template,context
-from productmanagement.models import Phones,Accessories
+from productmanagement.models import Product,Phones,Accessories,Laptop
 # Create your views here.
 
 # homepage
 def homepage(request):
-    phones = Phones.objects.all()
-    accessories = Accessories.objects.all()
-    # print(phones)
-    # print(accessories)
-    params = {'products':phones}
+    product = Product.objects.all()
+    params = {'products':product}
     return render(request,'viewproduct/home.html',params)
 
 # displaying specific product
 def viewProductDetails(request,ID):
-    product = Phones.objects.get(id=ID)
+    product = Product.objects.get(id=ID)
     context_varible = {'product':product}
     return render(request,'viewproduct/view.html',context_varible)
 
