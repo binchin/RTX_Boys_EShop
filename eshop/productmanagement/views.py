@@ -41,10 +41,13 @@ class ForAccessories:
             fs1 = FileSystemStorage(location='media/media/images')
             filename1 = fs1.save(image.name, image)
             uploaded_file_url1 = fs1.url(filename1)
+            # use this replace command to upload as there seems to be problem with file library
+            uploaded_file_url1 = uploaded_file_url1.replace('/media','media/images')
 
             fs2 = FileSystemStorage(location='media/media/documents')
             filename2 = fs2.save(specs.name,specs)
             uploaded_file_url2 = fs2.url(filename2)
+            uploaded_file_url2 = uploaded_file_url2.replace('/media','media/images')
 
         productObj = Product.objects.create(name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,image=uploaded_file_url1,specs=uploaded_file_url2)
         productObj.save()
@@ -138,10 +141,12 @@ class ForPhones:
             fs1 = FileSystemStorage(location='media/media/images')
             filename1 = fs1.save(image.name, image)
             uploaded_file_url1 = fs1.url(filename1)
+            uploaded_file_url1 = uploaded_file_url1.replace('/media','media/images')
 
             fs2 = FileSystemStorage(location='media/media/documents')
             filename2 = fs2.save(specs.name,specs)
             uploaded_file_url2 = fs2.url(filename2)
+            uploaded_file_url2 = uploaded_file_url2.replace('/media','media/documents')
 
         productObj = Product.objects.create(name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,image=uploaded_file_url1,specs=uploaded_file_url2)
         productObj.save()
