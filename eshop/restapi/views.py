@@ -86,5 +86,15 @@ def getProductDetails(request,ID):
         "product":"none"
         })
 
-
+@csrf_exempt
+def getAllProducts(request):
+    if request.method == "GET":
+        products = Product.objects.all()
+        list_of_products = list(products.values("name","price"))
+        productDictionary = {
+            "products":list_of_products
+        }
+        return JsonResponse(productDictionary)
+    else:
+        pass
 
