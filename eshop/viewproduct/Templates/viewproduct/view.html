@@ -28,6 +28,8 @@
         </div>
     </div>
     <!-- product specs display table -->
+
+    {% if productType == "phone" %}
     <div class="mainsection-bottom">
         <table>
             <tr>
@@ -40,30 +42,53 @@
             </tr>
             <tr>
                 <td>Screen size</td>
-                <td>{{product.screenSize}}</td>
+                <td>{{details.screenSize}}</td>
             </tr>
             <tr>
                 <td>Color</td>
-                <td>{{product.color}}</td>
+                <td>{{details.color}}</td>
             </tr>
             <tr>
                 <td>RAM</td>
-                <td>{{product.RAM}}</td>
+                <td>{{details.RAM}}</td>
             </tr>
             <tr>
                 <td>ROM</td>
-                <td>{{product.ROM}}</td>
+                <td>{{details.ROM}}</td>
             </tr>
             <tr>
                 <td>Battery</td>
-                <td>{{product.battery}}</td>
+                <td>{{details.battery}}</td>
             </tr>
             <tr>
                 <td>Description</td>
-                <td>{{product.description}}</td>
+                <td>{{details.description}}</td>
             </tr>
         </table>
     </div>
+    {% elif productType == "accessories" %}
+    <div class="mainsection-bottom">
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>{{product.name}}</td>
+            </tr>
+            <tr>
+                <td>Price</td>
+                <td>Nrs: {{product.price}}</td>
+            </tr>
+            <tr>
+                <td>Category</td>
+                <td>{{details.category}}</td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>{{details.description}}</td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
+
     <div class="download-container">
         <button class="download-btn" type="submit" onclick="window.open('{{product.specs.url}}')"><i class="fa fa-download"></i> Download product specs</button>
     </div>
