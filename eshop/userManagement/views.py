@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 
 # Create your views here.
 def user_login(request):
@@ -24,8 +24,9 @@ def user_signUp(request):
     else:
         user = User.objects.create_user(username=request.POST['Username'],password=request.POST['Password'],email=request.POST['Email'],first_name=request.POST['FName'],last_name=request.POST['LName'])
         user.save()
+        group = Group.objects.get(name='Customers') 
+        group.user_set.add(user)
         return redirect('/login')
 
-
-from django.contrib.auth import authenticate
-user = authenticate(username='john', password='secret')
+def user_logOut(request):
+    pass
