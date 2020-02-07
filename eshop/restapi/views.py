@@ -76,6 +76,7 @@ def getProductDetails(request,ID):
                 "product":"accessories",
                 "id":products.id,
                 "name":products.name,
+                "price":products.price,
                 "image":img,
                 "specs":spec,
                 "brand":products.brand,
@@ -128,7 +129,23 @@ def createUser(request):
 
 
 # Update a specific model data by ID => PUT
+@csrf_exempt
+def updateProductPrice(request):
+    if request.method == 'PUT':
+        dictionary_object = json.loads(request.body)
+        product = Product.objects.get(id=dictionary_object['id'])
+        product.price = id=dictionary_object['price']
+        
+        return JsonResponse({
+            "message":"Successfully updated price"
+        })
+    
+    else:
+        return JsonResponse({
+            "message":"Only PUT request available"
+        })
 
-
+# PUT data url: http://127.0.0.1:8000/api/updateProductPrice/
+# PUT data format: {"id":"1","price":"105000"}
 
 # Delete a specific model data by ID => DELETE

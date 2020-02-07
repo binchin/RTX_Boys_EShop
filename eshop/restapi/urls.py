@@ -6,4 +6,5 @@ urlpatterns = [
     path('getProductDetails/<int:ID>',getProductDetails),
     path('getAllProducts/',getAllProducts),
     path('createUser/',createUser),
+    path('updateProductPrice/',updateProductPrice),
 ]
