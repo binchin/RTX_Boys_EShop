@@ -12,7 +12,12 @@ class Product(models.Model):
     
     def __str__(self):
         return (self.name)
-    #abstract model which allows inheritance and the table is not created
+
+    def is_in_stock(self):
+        return int(self.stockNo) > 0
+    
+
+     #abstract model which allows inheritance and the table is not created
     # class Meta:
     #     abstract = True
     # ordering = ["name","price","stockNo","releaseDate","specs","brand","image"]
