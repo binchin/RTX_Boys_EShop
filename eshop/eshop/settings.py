@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'viewproduct',
     'search',
     'userManagement',
+    'orderManagement',
 ]
 
 
