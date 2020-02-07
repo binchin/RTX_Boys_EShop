@@ -89,6 +89,7 @@ def getProductDetails(request,ID):
             "message":"Only get request available"
         })
 
+# GET data url: http://127.0.0.1:8000/api/getProductDetails/<product-id>
 
 # Get all model data => GET
 @csrf_exempt
@@ -135,7 +136,7 @@ def updateProductPrice(request):
         dictionary_object = json.loads(request.body)
         product = Product.objects.get(id=dictionary_object['id'])
         product.price = id=dictionary_object['price']
-        
+        product.save()
         return JsonResponse({
             "message":"Successfully updated price"
         })
@@ -149,3 +150,17 @@ def updateProductPrice(request):
 # PUT data format: {"id":"1","price":"105000"}
 
 # Delete a specific model data by ID => DELETE
+@csrf_exempt
+def deleteProduct(request,ID):
+    if request.method == 'DELETE':
+        Product.objects.get(id=ID).delete()
+        return JsonResponse({
+            "message":"Successfully deleted product"
+        })
+    
+    else:
+        return JsonResponse({
+            "message":"Only Delete request available"
+        })
+
+# DELETE data url: http://127.0.0.1:8000/api/deleteProduct/<product-id>

@@ -7,4 +7,5 @@ urlpatterns = [
     path('getAllProducts/',getAllProducts),
     path('createUser/',createUser),
     path('updateProductPrice/',updateProductPrice),
+    path('deleteProduct/<int:ID>',deleteProduct),
 ]
