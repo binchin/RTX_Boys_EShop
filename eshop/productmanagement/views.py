@@ -47,7 +47,7 @@ class ForAccessories:
             fs2 = FileSystemStorage(location='media/media/documents')
             filename2 = fs2.save(specs.name,specs)
             uploaded_file_url2 = fs2.url(filename2)
-            uploaded_file_url2 = uploaded_file_url2.replace('/media','media/images')
+            uploaded_file_url2 = uploaded_file_url2.replace('/media','media/documents')
 
         productObj = Product.objects.create(name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,image=uploaded_file_url1,specs=uploaded_file_url2)
         productObj.save()
