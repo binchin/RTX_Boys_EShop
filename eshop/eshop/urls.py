@@ -29,7 +29,8 @@ urlpatterns += [
     path('',include('viewproduct.urls')),
     path('',include('productmanagement.urls')),
     path('',include('search.urls')),
-    path('',include('userManagement.urls'))
+    path('',include('userManagement.urls')),
+    path('api/',include('restapi.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # if settings.DEBUG:
