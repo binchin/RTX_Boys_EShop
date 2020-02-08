@@ -164,3 +164,29 @@ def deleteProduct(request,ID):
         })
 
 # DELETE data url: http://127.0.0.1:8000/api/deleteProduct/<product-id>
+
+#Rest API Pagination
+# Pagination with SIZE and PAGENO params => GET
+
+# http://127.0.0.1:8000/api/pagination/<int:SIZE>/<int:PAGENO>
+def getPage(request, SIZE, PAGENO):
+    if request.method == 'GET':
+        # determining start 
+        start = ((PAGENO -1)* SIZE)
+
+        # determining end
+        end = start + SIZE
+        print(start," End:",end)
+        products = Product.objects.all()[start:end]
+        list_of_products = list(products.values("name","price","stockNo","brand"))
+        productDictionary = {
+            "products":list_of_products
+        }
+        return JsonResponse(productDictionary)
+
+    else:
+        return JsonResponse({
+            "message":"Only get request available"
+        })
+
+
