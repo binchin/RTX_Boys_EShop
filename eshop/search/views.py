@@ -13,7 +13,7 @@ def view_search(request):
 
 
 def view_product(request,ID):
-    product = Phones.objects.get(id=ID)
+    product = Product.objects.get(id=ID)
     context_varible = {'product':product}
     return render(request,'view2.html',context_varible)
 
