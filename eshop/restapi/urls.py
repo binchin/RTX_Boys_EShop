@@ -8,4 +8,5 @@ urlpatterns = [
     path('createUser/',createUser),
     path('updateProductPrice/',updateProductPrice),
     path('deleteProduct/<int:ID>',deleteProduct),
+    path('pagination/<int:SIZE>/<int:PAGENO>',getPage)
 ]
