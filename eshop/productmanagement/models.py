@@ -12,7 +12,12 @@ class Product(models.Model):
     
     def __str__(self):
         return (self.name)
-    #abstract model which allows inheritance and the table is not created
+
+    def is_in_stock(self):
+        return int(self.stockNo) > 0
+    
+
+     #abstract model which allows inheritance and the table is not created
     # class Meta:
     #     abstract = True
     # ordering = ["name","price","stockNo","releaseDate","specs","brand","image"]
@@ -27,7 +32,7 @@ class Phones(models.Model):
     product  = models.OneToOneField(Product,on_delete=models.CASCADE, primary_key = True)
     
     def __str__(self):
-        return str(self.id)
+        return str(self.description)
 
 
 class Accessories(models.Model):
@@ -36,7 +41,7 @@ class Accessories(models.Model):
     description = models.TextField()
     
     def __str__(self):
-        return str(self.id)
+        return str(self.description)
 
 class Laptop(models.Model):
     product  = models.OneToOneField(Product,on_delete=models.CASCADE, primary_key = True)
@@ -52,4 +57,4 @@ class Laptop(models.Model):
     description = models.TextField() 
     
     def __str__(self):
-        return str(self.id)
+        return str(self.description)
