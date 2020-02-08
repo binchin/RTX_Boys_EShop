@@ -30,7 +30,11 @@ def viewProductDetails(request,ID):
 
 
 def viewPhones(request):
-    product = Product.objects.all()
+    # creating loacal variable
+    product = Product.objects.none()
+    phones = Phones.objects.all()
+    for phone in phones:
+        product += Product.objects.get(id = phone.product_id)
     params = {'products':product}
     return render(request,'viewproduct/phones.html',params)
 
