@@ -14,7 +14,7 @@
 
             <p class="card-text"><b>NRs:{{product.price}}</b></b>
             </p>
-            <a href="view/{{product.id}}" class="btn btn-dark">View Product</a>
+            <a href="{% url 'view' product.id %}" class="btn btn-dark">View Product</a>
         </div>
     </div>
     {% empty %} There are no products availble. {% endfor %}
