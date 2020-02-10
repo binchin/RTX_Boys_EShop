@@ -221,7 +221,7 @@ class ForPhones:
 # All codes created below this section are done by Ranjan KC
 def deleteProducts(request):
     products= Product.objects.all()
-    params = {'products':produts}
+    params = {'products':products}
     return render(request,'delete.html',params)
 
 def confirmDeleteProducts(request,ID):
