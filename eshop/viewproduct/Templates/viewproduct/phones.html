@@ -1,0 +1,34 @@
+{% extends 'viewproduct/basic.html' %}
+<!-- title -->
+{% block title%}eshop | phones{% endblock %}
+<!-- start of body -->
+{% block main-page %}
+
+<!-- product block -->
+<div class="viewproduct">
+    {% for product in products %}
+    <div class="card" style="width: 18rem; margin: 10px;">
+        <img src="{{product.image.url}}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{product.name}}</h5>
+
+            <p class="card-text"><b>NRs:{{product.price}}</b></b>
+            </p>
+            <a href="{% url 'view' product.id %}" class="btn btn-dark">View Product</a>
+        </div>
+    </div>
+    {% empty %} There are no Phones availble. {% endfor %}
+</div>
+<br>
+<!-- styling -->
+<style>
+    .viewproduct {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        margin: auto;
+        align-content: space-between;
+        justify-content: center;
+    }
+</style>
+{% endblock %}

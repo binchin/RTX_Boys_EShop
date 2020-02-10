@@ -41,15 +41,18 @@ class ForAccessories:
             fs1 = FileSystemStorage(location='media/media/images')
             filename1 = fs1.save(image.name, image)
             uploaded_file_url1 = fs1.url(filename1)
+            # use this replace command to upload as there seems to be problem with file library
+            uploaded_file_url1 = uploaded_file_url1.replace('/media','media/images')
 
             fs2 = FileSystemStorage(location='media/media/documents')
             filename2 = fs2.save(specs.name,specs)
             uploaded_file_url2 = fs2.url(filename2)
+            uploaded_file_url2 = uploaded_file_url2.replace('/media','media/documents')
 
         productObj = Product.objects.create(name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,image=uploaded_file_url1,specs=uploaded_file_url2)
         productObj.save()
 
-        accessoriesObj = Accessories(description=get_description,category=get_category)
+        accessoriesObj = Accessories(description=get_description,category=get_category,product_id=productObj.id)
         accessoriesObj.save()
         
         return HttpResponse("Successfully Stored !!")
@@ -138,15 +141,17 @@ class ForPhones:
             fs1 = FileSystemStorage(location='media/media/images')
             filename1 = fs1.save(image.name, image)
             uploaded_file_url1 = fs1.url(filename1)
+            uploaded_file_url1 = uploaded_file_url1.replace('/media','media/images')
 
             fs2 = FileSystemStorage(location='media/media/documents')
             filename2 = fs2.save(specs.name,specs)
             uploaded_file_url2 = fs2.url(filename2)
+            uploaded_file_url2 = uploaded_file_url2.replace('/media','media/documents')
 
         productObj = Product.objects.create(name=get_name,price=get_price,stockNo=get_stockNo,releaseDate=get_releaseDate,brand=get_brand,image=uploaded_file_url1,specs=uploaded_file_url2)
         productObj.save()
 
-        phoneObj = Phones(screenSize=get_screenSize,RAM=get_RAM,ROM=get_ROM,color=get_color,battery=get_battery,description=get_description)
+        phoneObj = Phones(screenSize=get_screenSize,RAM=get_RAM,ROM=get_ROM,color=get_color,battery=get_battery,description=get_description,product_id=productObj.id)
         phoneObj.save()
         return HttpResponse("Successfully Stored !!")
 
@@ -215,12 +220,11 @@ class ForPhones:
 # *************************************************************************************
 # All codes created below this section are done by Ranjan KC
 def deleteProducts(request):
-    phones = Phones.objects.all()
-    accessories = Accessories.objects.all()
-    params = {'products':phones}
+    products= Product.objects.all()
+    params = {'products':produts}
     return render(request,'delete.html',params)
 
 def confirmDeleteProducts(request,ID):
-    product = Phones.objects.get(id=ID)
+    product = Product.objects.get(id=ID)
     product.delete()
     return HttpResponse("Successfully Deleted !!")
